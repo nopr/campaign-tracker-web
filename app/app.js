@@ -6,8 +6,9 @@ app.controller('main', ['$scope', '$http', function ($scope, $http) {
 
   $scope.factions = []
 
-  $http.get(api+'/factions', function (results) {
-    $scope.factions = results;
+  $http.get(api+'/factions').success(function (data) {
+    console.log(data)
+    $scope.factions = data;
   });
 
 }]);
