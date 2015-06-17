@@ -14,24 +14,48 @@
   <script src="app/app.js"></script>
 </head>
 <body style="padding: 1rem" ng-app="app" ng-controller="main">
-  <nav class="ui vertical menu">
-    <a class="active header item">
-      Factions
-      <span class="ui teal label">{{ factions.length }}</span>
-    </a>
-    <a ng-repeat="faction in factions" href="/{{ faction.slug }}" class="item">{{ faction.name }}</a>
-  </nav>
-  <nav class="ui vertical menu">
-    <div class="header item">
-      Players
-      <span class="ui teal label">55</span>
+  <div class="ui grid">
+    <div class="four wide column">
+
+      <nav class="ui fluid vertical menu">
+        <a class="active header item">
+          Factions
+          <span class="ui teal label">{{ factions.length }}</span>
+        </a>
+        <a href="/faction/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
+          {{ faction.name }}
+        </a>
+      </nav>
+      <nav class="ui fluid vertical menu">
+        <div class="header item">
+          Players
+          <span class="ui teal label">0</span>
+        </div>
+        <div class="item">
+          <div class="ui transparent icon input">
+            <input type="text" placeholder="Find player&hellip;" />
+            <i class="search icon"></i>
+          </div>
+        </div>
+      </nav>
+
     </div>
-    <div class="item">
-      <div class="ui transparent icon input">
-        <input type="text" placeholder="Find player&hellip;" />
-        <i class="search icon"></i>
-      </div>
+    <div class="twelve wide column">
+
+      <h1>Faction</h1>
+      <form  class="ui form" ng-submit="addFaction()">
+        <div class="field">
+          <label>Slug</label>
+          <input type="text" ng-model="faction_slug" name="slug" placeholder="eg. black-sun" />
+        </div>
+        <div class="field">
+          <label>Name</label>
+          <input type="text" ng-model="faction_name" name="name" placeholder="eg. Black Sun Syndicate" />
+        </div>
+        <button class="positive ui button" type="submit">Create</button>
+      </form>
+
     </div>
-  </nav>
+  </div>
 </body>
 </html>
