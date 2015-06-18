@@ -31,47 +31,57 @@ app.config(function ($routeProvider) {
 app.directive('navigation', ['$http', function ($http) {
   return {
     templateUrl: '/app/view/navigation.html',
-    scope: '=',
-    link: function (scope, element) {
-      // Arrays
-      scope.factions = []
-      scope.players = []
-      // Get the factions
-      $http.get(api+'/faction').success(function (data) {
-        scope.factions = data;
-      });
-      // Get the players
-      $http.get(api+'/player').success(function (data) {
-        scope.players = data;
-      });
-    }
+    scope: '='
   }
 }]);
 
 // Controller: Main
 app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 
-  console.log('main controller')
+  // Get the factions
+  $http.get(api+'/faction').success(function (data) {
+    $scope.factions = data;
+  });
+  // Get the players
+  $http.get(api+'/player').success(function (data) {
+    $scope.players = data;
+  });
 
 }]);
 
 // Controller: Faction
 app.controller('FactionController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
+  // Get the factions
+  $http.get(api+'/faction').success(function (data) {
+    $scope.factions = data;
+  });
+  // Get the players
+  $http.get(api+'/player').success(function (data) {
+    $scope.players = data;
+  });
+
   // Single faction, get data
   if ($routeParams.slug) {
-    console.log('one faction')
     $http.get(api+'/faction/'+$routeParams.slug).success(function (data) {
       $scope.faction = data;
     });
-  } else {
-    console.log('all factions')
-    console.log($scope.factions)
   }
 
-  $scope.addplayer = function () {
-    $http.post(api+'/faction/', $scope.new_faction).success(function (data) {
-      $scope.factions.push(data);
+  $scope.addFaction = function () {
+    var form = this;
+    $http.post(api+'/faction/', form.data).success(function (data) {
+      form.data = null;
+      $http.get(api+'/faction/').success(function (data) {
+        $scope.factions = data;
+      });
+    });
+  }
+  $scope.removeFaction = function (id) {
+    $http.delete(api+'/faction/'+id).success(function (data) {
+      $http.get(api+'/faction/').success(function (data) {
+        $scope.factions = data;
+      });
     });
   }
 
@@ -80,20 +90,36 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', function
 // Controller: Player
 app.controller('PlayerController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
+  // Get the factions
+  $http.get(api+'/faction').success(function (data) {
+    $scope.factions = data;
+  });
+  // Get the players
+  $http.get(api+'/player').success(function (data) {
+    $scope.players = data;
+  });
+
   // Single faction, get data
   if ($routeParams.slug) {
-    console.log('one player')
     $http.get(api+'/player/'+$routeParams.slug).success(function (data) {
       $scope.player = data;
     });
-  } else {
-    console.log('all players')
-    console.log($scope.players)
   }
 
-  $scope.addplayer = function () {
-    $http.post(api+'/player/', $scope.new_player).success(function (data) {
-      $scope.players.push(data);
+  $scope.addPlayer = function () {
+    var form = this;
+    $http.post(api+'/player/', form.data).success(function (data) {
+      form.data = null;
+      $http.get(api+'/player/').success(function (data) {
+        $scope.players = data;
+      });
+    });
+  }
+  $scope.removePlayer = function (id) {
+    $http.delete(api+'/player/'+id).success(function (data) {
+      $http.get(api+'/player/').success(function (data) {
+        $scope.players = data;
+      });
     });
   }
 

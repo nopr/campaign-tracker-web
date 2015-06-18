@@ -1,4 +1,6 @@
-<div>
+<div class="ui grid">
+<div class="four wide column"><navigation /></div>
+<div class="twelve wide column">
 
   <section ng-if="!player">
 
@@ -7,27 +9,29 @@
       <div>Players</div>
     </h2>
 
-    <table class="ui sortable table">
+    <table class="ui celled striped table">
       <thead>
         <tr>
           <th>Name</th>
           <th>Faction</th>
-          <th>Wins</th>
-          <th>Draws</th>
-          <th>Losses</th>
-          <th>MOV (Average)</th>
-          <th>MOV (Cumulative)</th>
+          <th>Win</th>
+          <th>Draw</th>
+          <th>Lose</th>
+          <th>MOV (Av)</th>
+          <th>MOV (Cu)</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="player in players">
           <td>{{ player.name }}</td>
-          <td>{{ player.faction }}</td>
+          <td>{{ player.faction.name }}</td>
           <td>{{ player.matches.won }}</td>
           <td>{{ player.matches.drawn }}</td>
           <td>{{ player.matches.lost }}</td>
           <td>{{ player.score.average }}</td>
           <td>{{ player.score.cumulative }}</td>
+          <td><a href ng-click="removePlayer(player._id)">Remove</a></td>
         </tr>
         <tr ng-if="!players.length">
           <td colspan="7">No players</td>
@@ -35,29 +39,24 @@
       </tbody>
     </table>
 
-    <h2 class="ui center aligned header">
-      <div>New Player</div>
-    </h2>
-
-    <form class="ui form">
-      <div class="two fields">
+    <h4 class="ui dividing header">Create new player</h4>
+    <form class="ui form" ng-submit="addPlayer()">
+      <div class="three fields">
         <div class="field">
           <label>Name</label>
-          <input type="text" ng-model="new_player.name" placeholder="Name" />
+          <input type="text" ng-model="data.name" placeholder="Luke Skywalker" />
         </div>
         <div class="field">
           <label>Faction</label>
-          <div class="ui selection dropdown">
-            <input type="hidden" name="new_player.faction">
-            <div class="default text">Faction</div>
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <div ng-each="faction factions" class="item" data-value="{{ faction.slug }}">{{ faction.name }}</div>
-            </div>
-          </div>
+          <select ng-model="data.faction" class="ui selection dropdown">
+            <option ng-repeat="faction in factions" value="{{ faction._id }}">{{ faction.name }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button type="submit" class="ui positive button">Create</button>
         </div>
       </div>
-      <button class="ui positive button" ng-click="addplayer()">Create</button>
     </form>
 
   </section>
@@ -80,4 +79,5 @@
 
   </form>
 
+</div>
 </div>

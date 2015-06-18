@@ -8,20 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!--link rel="shortcut icon" href="/favicon.ico" /-->
   <link rel="stylesheet" href="assets/semantic.min.css" />
+</head>
+<body style="padding: 1rem" ng-app="app">
+  <div class="ui grid" ng-view></div>
   <script src="assets/jquery.min.js"></script>
   <script src="assets/angular.min.js"></script>
   <script src="assets/angular-route.min.js"></script>
   <script src="assets/semantic.min.js"></script>
   <script src="app/app.js"></script>
-</head>
-<body style="padding: 1rem" ng-app="app">
-  <div class="ui grid">
-    <div class="four wide column">
-      <navigation />
-    </div>
-    <div class="twelve wide column">
-      <div ng-view />
-    </div>
-  </div>
 </body>
 </html>
