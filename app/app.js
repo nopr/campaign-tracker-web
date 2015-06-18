@@ -33,6 +33,9 @@ app.directive('navigation', ['$http', function ($http) {
     templateUrl: '/app/view/navigation.html',
     scope: '=',
     link: function (scope, element) {
+      // Arrays
+      scope.factions = []
+      scope.players = []
       // Get the factions
       $http.get(api+'/faction').success(function (data) {
         scope.factions = data;

@@ -4,6 +4,7 @@
       Factions
       <span class="ui teal label">{{ factions.length }}</span>
     </a>
+    <div ng-if="!factions.length">No factions. <a href="/#/factions">Add</a></div>
     <a ng-href="/#/factions/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
       {{ faction.name }}
     </a>
@@ -11,13 +12,14 @@
   <nav class="ui fluid vertical menu">
     <a ng-href="/#/players" class="header item">
       Players
-      <span class="ui teal label">0</span>
+      <span class="ui teal label">{{ players.length }}</span>
     </a>
-    <div class="item">
+    <div ng-if="players.length" class="item">
       <div class="ui transparent icon input">
         <input type="text" placeholder="Find player&hellip;" />
         <i class="search icon"></i>
       </div>
     </div>
+    <div ng-if="!players.length">No players. <a href="/#/factions">Add</a></div>
   </nav>
 </div>
