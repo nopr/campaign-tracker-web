@@ -1,0 +1,83 @@
+<div>
+
+  <section ng-if="!player">
+
+    <h2 class="ui center aligned icon header">
+      <i class="circular users icon"></i>
+      <div>Players</div>
+    </h2>
+
+    <table class="ui sortable table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Faction</th>
+          <th>Wins</th>
+          <th>Draws</th>
+          <th>Losses</th>
+          <th>MOV (Average)</th>
+          <th>MOV (Cumulative)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players">
+          <td>{{ player.name }}</td>
+          <td>{{ player.faction }}</td>
+          <td>{{ player.matches.won }}</td>
+          <td>{{ player.matches.drawn }}</td>
+          <td>{{ player.matches.lost }}</td>
+          <td>{{ player.score.average }}</td>
+          <td>{{ player.score.cumulative }}</td>
+        </tr>
+        <tr ng-if="!players.length">
+          <td colspan="7">No players</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="ui center aligned header">
+      <div>New Player</div>
+    </h2>
+
+    <form class="ui form">
+      <div class="two fields">
+        <div class="field">
+          <label>Name</label>
+          <input type="text" ng-model="new_player.name" placeholder="Name" />
+        </div>
+        <div class="field">
+          <label>Faction</label>
+          <div class="ui selection dropdown">
+            <input type="hidden" name="new_player.faction">
+            <div class="default text">Faction</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div ng-each="faction factions" class="item" data-value="{{ faction.slug }}">{{ faction.name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="ui positive button" ng-click="addplayer()">Create</button>
+    </form>
+
+  </section>
+
+  <form class="ui form" ng-if="player">
+
+    <h2 class="ui center aligned icon header">
+      <i class="circular user icon"></i>
+      <div>{{ player.name }}</div>
+    </h2>
+
+    <h4 class="ui dividing header">Player Information</h4>
+    <input type="text" ng-model="player.name" />
+    <input type="text" ng-model="player.faction" />
+    <input type="text" ng-model="player.matches.won" />
+    <input type="text" ng-model="player.matches.drawn" />
+    <input type="text" ng-model="player.matches.lost" />
+    <input type="text" ng-model="player.score.average" />
+    <input type="text" ng-model="player.score.cumulative" />
+
+  </form>
+
+</div>

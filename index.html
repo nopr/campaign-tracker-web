@@ -10,51 +10,17 @@
   <link rel="stylesheet" href="assets/semantic.min.css" />
   <script src="assets/jquery.min.js"></script>
   <script src="assets/angular.min.js"></script>
+  <script src="assets/angular-route.min.js"></script>
   <script src="assets/semantic.min.js"></script>
   <script src="app/app.js"></script>
 </head>
-<body style="padding: 1rem" ng-app="app" ng-controller="main">
+<body style="padding: 1rem" ng-app="app">
   <div class="ui grid">
     <div class="four wide column">
-
-      <nav class="ui fluid vertical menu">
-        <a class="active header item">
-          Factions
-          <span class="ui teal label">{{ factions.length }}</span>
-        </a>
-        <a href="/faction/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
-          {{ faction.name }}
-        </a>
-      </nav>
-      <nav class="ui fluid vertical menu">
-        <div class="header item">
-          Players
-          <span class="ui teal label">0</span>
-        </div>
-        <div class="item">
-          <div class="ui transparent icon input">
-            <input type="text" placeholder="Find player&hellip;" />
-            <i class="search icon"></i>
-          </div>
-        </div>
-      </nav>
-
+      <navigation />
     </div>
     <div class="twelve wide column">
-
-      <h1>Faction</h1>
-      <form  class="ui form" ng-submit="addFaction()">
-        <div class="field">
-          <label>Slug</label>
-          <input type="text" ng-model="faction_slug" name="slug" placeholder="eg. black-sun" />
-        </div>
-        <div class="field">
-          <label>Name</label>
-          <input type="text" ng-model="faction_name" name="name" placeholder="eg. Black Sun Syndicate" />
-        </div>
-        <button class="positive ui button" type="submit">Create</button>
-      </form>
-
+      <div ng-view />
     </div>
   </div>
 </body>

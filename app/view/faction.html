@@ -1,0 +1,90 @@
+<div>
+
+  <section ng-if="!faction">
+
+    <h2 class="ui center aligned icon header">
+      <i class="circular cubes icon"></i>
+      <div>Factions</div>
+    </h2>
+
+    <div class="ui three columns grid">
+      <div class="column" ng-repeat="faction in factions">
+        <div class="ui fluid card">
+          <a href="/#/factions/{{ faction.slug }}" class="image">
+            <img src="//placehold.it/200x200" />
+          </a>
+          <div class="content">
+            <a href="/#/factions/{{ faction.slug }}" class="header">{{ faction.name }}</a>
+            <div class="meta">
+              <b>Commander:</b> {{ faction.commander }}
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+          <div class="extra content">
+            <a><i class="user icon"></i> 22 Members</a>
+          </div>
+        </div>
+      </div>
+    <div>
+
+  </section>
+
+  <form class="ui form" ng-if="faction">
+
+    <h2 class="ui center aligned icon header">
+      <i class="circular cube icon"></i>
+      <div>{{ faction.name }}</div>
+    </h2>
+
+    <h4 class="ui dividing header">Faction Information</h4>
+    <div class="two fields">
+      <div class="field">
+        <div class="two fields">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" ng-model="faction.name" name="name" />
+          </div>
+          <div class="field">
+            <label>Slug</label>
+            <input type="text" ng-model="faction.slug" name="slug" />
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Commander</label>
+        <input type="text" ng-model="faction.commander" name="commander" />
+      </div>
+    </div>
+
+    <h4 class="ui dividing header">Faction Members</h4>
+    <table class="ui sortable table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wins</th>
+          <th>Draws</th>
+          <th>Losses</th>
+          <th>MOV (Average)</th>
+          <th>MOV (Cumulative)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players">
+          <td>{{ player.name }}</td>
+          <td>{{ player.matches.won }}</td>
+          <td>{{ player.matches.drawn }}</td>
+          <td>{{ player.matches.lost }}</td>
+          <td>{{ player.score.average }}</td>
+          <td>{{ player.score.cumulative }}</td>
+        </tr>
+        <tr ng-if="!players.length">
+          <td colspan="7">No players</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </form>
+
+</div>

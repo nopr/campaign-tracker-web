@@ -1,0 +1,23 @@
+<div>
+  <nav class="ui fluid vertical menu">
+    <a ng-href="/#/factions" class="active header item">
+      Factions
+      <span class="ui teal label">{{ factions.length }}</span>
+    </a>
+    <a ng-href="/#/factions/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
+      {{ faction.name }}
+    </a>
+  </nav>
+  <nav class="ui fluid vertical menu">
+    <a ng-href="/#/players" class="header item">
+      Players
+      <span class="ui teal label">0</span>
+    </a>
+    <div class="item">
+      <div class="ui transparent icon input">
+        <input type="text" placeholder="Find player&hellip;" />
+        <i class="search icon"></i>
+      </div>
+    </div>
+  </nav>
+</div>
