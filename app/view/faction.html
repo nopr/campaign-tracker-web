@@ -12,11 +12,11 @@
     <div class="ui three columns grid">
       <div class="column" ng-repeat="faction in factions">
         <div class="ui fluid card">
-          <a href="/#/factions/{{ faction.slug }}" class="image">
+          <a href="#/factions/{{ faction.slug }}" class="image">
             <img src="//placehold.it/200x200" />
           </a>
           <div class="content">
-            <a href="/#/factions/{{ faction.slug }}" class="header">{{ faction.name }}</a>
+            <a href="#/factions/{{ faction.slug }}" class="header">{{ faction.name }}</a>
             <div class="meta">
               <b>Commander:</b> {{ faction.commander.name }}
             </div>
