@@ -29,6 +29,31 @@
       </div>
     <div>
 
+    <h2 class="ui center aligned header">
+      <div>New Faction</div>
+    </h2>
+
+    <form class="ui form">
+      <div class="two fields">
+        <div class="field">
+          <label>Name</label>
+          <input type="text" ng-model="new_player.name" placeholder="Name" />
+        </div>
+        <div class="field">
+          <label>Faction</label>
+          <div class="ui selection dropdown">
+            <input type="hidden" name="new_player.faction">
+            <div class="default text">Faction</div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div ng-each="faction factions" class="item" data-value="{{ faction.slug }}">{{ faction.name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="ui positive button" ng-click="addplayer()">Create</button>
+    </form>
+
   </section>
 
   <form class="ui form" ng-if="faction">
