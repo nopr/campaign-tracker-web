@@ -6,23 +6,23 @@ var api = 'http://xwing-campaign-tracker.herokuapp.com';
 app.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/app/view/main.html',
+      templateUrl: 'app/view/main.html',
       controller: 'MainController'
     })
     .when('/players', {
-      templateUrl: '/app/view/player.html',
+      templateUrl: 'app/view/player.html',
       controller: 'PlayerController'
     })
     .when('/players/:id', {
-      templateUrl: '/app/view/player.html',
+      templateUrl: 'app/view/player.html',
       controller: 'PlayerController'
     })
     .when('/factions', {
-      templateUrl: '/app/view/faction.html',
+      templateUrl: 'app/view/faction.html',
       controller: 'FactionController'
     })
     .when('/factions/:slug', {
-      templateUrl: '/app/view/faction.html',
+      templateUrl: 'app/view/faction.html',
       controller: 'FactionController'
     });
 });
@@ -30,7 +30,7 @@ app.config(function ($routeProvider) {
 // Directive: navigation
 app.directive('navigation', ['$http', function ($http) {
   return {
-    templateUrl: '/app/view/navigation.html',
+    templateUrl: 'app/view/navigation.html',
     scope: '='
   }
 }]);

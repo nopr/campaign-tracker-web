@@ -1,18 +1,18 @@
 <div>
   <nav class="ui fluid vertical menu">
-    <a ng-href="/#/factions" class="header item">
+    <a ng-href="#/factions" class="header item">
       Factions
       <span class="ui teal label">{{ factions.length }}</span>
     </a>
     <div class="item" ng-if="!factions.length">
       No factions.
     </div>
-    <a ng-href="/#/factions/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
-      {{ faction.name }} / {{ faction.slug }}
+    <a ng-href="#/factions/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
+      {{ faction.name }}
     </a>
   </nav>
   <nav class="ui fluid vertical menu">
-    <a ng-href="/#/players" class="header item">
+    <a ng-href="#/players" class="header item">
       Players
       <span class="ui teal label">{{ players.length }}</span>
     </a>
