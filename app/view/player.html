@@ -17,8 +17,8 @@
           <th>Win</th>
           <th>Draw</th>
           <th>Lose</th>
-          <th>MOV (Av)</th>
-          <th>MOV (Cu)</th>
+          <th>Average MOV</th>
+          <th>Score</th>
           <th></th>
         </tr>
       </thead>
@@ -26,9 +26,9 @@
         <tr ng-repeat="player in players">
           <td>{{ player.name }}</td>
           <td>{{ player.faction.name }}</td>
-          <td>{{ player.matches.won }}</td>
-          <td>{{ player.matches.drawn }}</td>
-          <td>{{ player.matches.lost }}</td>
+          <td>{{ player.games.won }}</td>
+          <td>{{ player.games.drawn }}</td>
+          <td>{{ player.games.lost }}</td>
           <td>{{ player.score.average }}</td>
           <td>{{ player.score.cumulative }}</td>
           <td><a href ng-click="removePlayer(player._id)">Remove</a></td>
@@ -61,7 +61,7 @@
 
   </section>
 
-  <form class="ui form" ng-if="player">
+  <form class="ui form" ng-if="player" ng-submit="editPlayer(player._id)">
 
     <h2 class="ui center aligned icon header">
       <i class="circular user icon"></i>

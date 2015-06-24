@@ -7,7 +7,7 @@
     <div class="item" ng-if="!factions.length">
       No factions.
     </div>
-    <a ng-href="#/factions/{{ faction.slug }}" ng-repeat="faction in factions" class="item">
+    <a ng-href="#/factions/{{ faction._id }}" ng-repeat="faction in factions" class="item">
       {{ faction.name }}
     </a>
   </nav>
@@ -19,11 +19,20 @@
     <div class="item" ng-if="!players.length">
       No players.
     </div>
-    <div ng-if="players.length" class="item">
-      <div class="ui transparent icon input">
-        <input type="text" placeholder="Find player&hellip;" />
-        <i class="search icon"></i>
-      </div>
+    <a ng-href="#/players" class="item" ng-if="players.length">
+      List of Players
+    </a>
+  </nav>
+  <nav class="ui fluid vertical menu">
+    <a ng-href="#/matches" class="header item">
+      Matches
+      <span class="ui teal label">{{ matches.length }}</span>
+    </a>
+    <div class="item" ng-if="!matches.length">
+      No matches.
     </div>
+    <a ng-href="#/matches" class="item" ng-if="matches.length">
+      List of Matches
+    </a>
   </nav>
 </div>

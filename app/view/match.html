@@ -1,0 +1,107 @@
+<div class="ui grid">
+<div class="four wide column"><navigation /></div>
+<div class="twelve wide column">
+
+  <section ng-if="!match">
+
+    <h2 class="ui center aligned icon header">
+      <i class="circular trophy icon"></i>
+      <div>Matches</div>
+    </h2>
+
+    <table class="ui celled striped table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Score</th>
+          <th>Player</th>
+          <th>Score</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="match in matches">
+          <td>{{ match.home.player.name }}</td>
+          <td>{{ match.home.score }} ({{ match.home.result }})</td>
+          <td>{{ match.away.player.name }}</td>
+          <td>{{ match.away.score }} ({{ match.away.result }})</td>
+          <td><a href ng-click="removeMatchResult(match._id)">Remove</a></td>
+        </tr>
+      </tbody>
+      <tbody ng-if="!matches.length">
+        <tr>
+          <td colspan="5">No matches</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="ui dividing header">Add new match result</h4>
+    <form class="ui form" ng-submit="addMatchResult()">
+      <div class="four fields">
+        <div class="field">
+          <label>Player 1</label>
+          <select ng-model="data.home.player" class="ui selection dropdown">
+            <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Score</label>
+          <input type="number" ng-model="data.home.score" />
+        </div>
+        <div class="field">
+          <label>Player 2</label>
+          <select ng-model="data.away.player" class="ui selection dropdown">
+            <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Score</label>
+          <input type="number" ng-model="data.away.score" />
+        </div>
+      </div>
+      <div class="field">
+        <button type="submit" class="ui positive button">Add</button>
+      </div>
+    </form>
+
+  </section>
+
+  <form class="ui form" ng-if="match" ng-submit="editMatchResult(match._id)">
+
+    <h2 class="ui center aligned icon header">
+      <i class="circular user icon"></i>
+      <div>{{ match.home.player.name }} vs {{ match.away.player.name }}</div>
+    </h2>
+
+    <div class="two fields">
+      <div class="field">
+        <label>Player 1</label>
+        <select ng-model="match.home.player" class="ui selection dropdown">
+          <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Score</label>
+        <input type="number" ng-model="match.home.score" />
+      </div>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label>Player 2</label>
+        <select ng-model="match.away.player" class="ui selection dropdown">
+          <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Score</label>
+        <input type="number" ng-model="match.away.score" />
+      </div>
+    </div>
+    <div class="field">
+      <button type="submit" class="ui positive button">Save</button>
+    </div>
+
+  </form>
+
+</div>
+</div>

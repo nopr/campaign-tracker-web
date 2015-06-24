@@ -12,11 +12,11 @@
     <div class="ui three columns grid">
       <div class="column" ng-repeat="faction in factions">
         <div class="ui fluid card">
-          <a href="#/factions/{{ faction.slug }}" class="image">
+          <a href="#/factions/{{ faction._id }}" class="image">
             <img src="//placehold.it/200x200" />
           </a>
           <div class="content">
-            <a href="#/factions/{{ faction.slug }}" class="header">{{ faction.name }}</a>
+            <a href="#/factions/{{ faction._id }}" class="header">{{ faction.name }}</a>
             <div class="meta">
               <b>Commander:</b> {{ faction.commander.name }}
             </div>
@@ -33,14 +33,10 @@
 
     <h4 class="ui dividing header">Create new faction</h4>
     <form class="ui form" ng-submit="addFaction()">
-      <div class="three fields">
+      <div class="two fields">
         <div class="field">
           <label>Name</label>
           <input type="text" ng-model="data.name" name="name" placeholder="Black Sun Syndicate" />
-        </div>
-        <div class="field">
-          <label>Slug</label>
-          <input type="text" ng-model="data.slug" name="slug" placeholder="black-sun" />
         </div>
         <div class="field">
           <label>Commander</label>
@@ -56,7 +52,7 @@
 
   </section>
 
-  <form class="ui form" ng-if="faction">
+  <form name="EditFaction" class="ui form" ng-if="faction" ng-submit="editFaction()">
 
     <h2 class="ui center aligned icon header">
       <i class="circular cube icon"></i>
@@ -64,21 +60,20 @@
     </h2>
 
     <h4 class="ui dividing header">Faction Information</h4>
-    <div class="three fields">
+    <div class="two fields">
       <div class="field">
         <label>Name</label>
         <input type="text" ng-model="faction.name" name="name" />
       </div>
       <div class="field">
-        <label>Slug</label>
-        <input type="text" ng-model="faction.slug" name="slug" />
-      </div>
-      <div class="field">
         <label>Commander</label>
-        <select ng-model="data.commander" class="ui selection dropdown">
+        <select ng-model="faction.commander" class="ui selection dropdown">
           <option ng-repeat="player in faction.players" ng-selected="player._id === faction.commander._id" value="{{ player._id }}">{{ player.name }}</option>
         </select>
       </div>
+    </div>
+    <div class="field" ng-show="EditFaction.$dirty">
+      <button ng-disabled="EditFaction.$submitted" type="submit" class="ui positive button">Save</button>
     </div>
 
     <h4 class="ui dividing header">Faction Members</h4>
@@ -89,16 +84,16 @@
           <th>Win</th>
           <th>Draw</th>
           <th>Lose</th>
-          <th>MOV (Av)</th>
-          <th>MOV (Cu)</th>
+          <th>MOV</th>
+          <th>Score</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="player in faction.players">
           <td>{{ player.name }}</td>
-          <td>{{ player.matches.won }}</td>
-          <td>{{ player.matches.drawn }}</td>
-          <td>{{ player.matches.lost }}</td>
+          <td>{{ player.games.won }}</td>
+          <td>{{ player.games.drawn }}</td>
+          <td>{{ player.games.lost }}</td>
           <td>{{ player.score.average }}</td>
           <td>{{ player.score.cumulative }}</td>
         </tr>

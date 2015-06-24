@@ -1,6 +1,7 @@
 
 var app = angular.module('app', ['ngRoute']);
-var api = 'http://xwing-campaign-tracker.herokuapp.com';
+var uri = 'http://localhost:5000';
+// var uri = 'http://xwing-campaign-tracker.herokuapp.com';
 
 // Configuration
 app.config(function ($routeProvider) {
@@ -21,11 +22,38 @@ app.config(function ($routeProvider) {
       templateUrl: 'app/view/faction.html',
       controller: 'FactionController'
     })
-    .when('/factions/:slug', {
+    .when('/factions/:id', {
       templateUrl: 'app/view/faction.html',
       controller: 'FactionController'
+    })
+    .when('/matches', {
+      templateUrl: 'app/view/match.html',
+      controller: 'MatchController'
+    })
+    .when('/matches/:id', {
+      templateUrl: 'app/view/match.html',
+      controller: 'MatchController'
     });
 });
+
+// Service: Api
+app.factory('api', ['$http', function ($http) {
+  var stored = {
+    factions: 0,
+    players: 0,
+    matches: 0
+  };
+  var self = {};
+  return function (resource, data) {
+    if (data) {
+      stored[resource] = data;
+      return stored[resource];
+    }
+    if (!data) {
+      return stored[resource];
+    }
+  }
+}]);
 
 // Directive: navigation
 app.directive('navigation', ['$http', function ($http) {
@@ -36,51 +64,62 @@ app.directive('navigation', ['$http', function ($http) {
 }]);
 
 // Controller: Main
-app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
+app.controller('MainController', ['$scope', '$http', 'api', function ($scope, $http, api) {
 
-  // Get the factions
-  $http.get(api+'/faction').success(function (data) {
-    $scope.factions = data;
+  $http.get(uri+'/faction').success(function (data) {
+    $scope.factions = api('factions', data);
   });
-  // Get the players
-  $http.get(api+'/player').success(function (data) {
-    $scope.players = data;
+  $http.get(uri+'/player').success(function (data) {
+    console.log('players', data)
+    $scope.players = api('players', data);
+  });
+  $http.get(uri+'/match').success(function (data) {
+    console.log('matches', data)
+    $scope.matches = api('matches', data);
   });
 
 }]);
 
 // Controller: Faction
-app.controller('FactionController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+app.controller('FactionController', ['$scope', '$http', '$routeParams', 'api', function ($scope, $http, $routeParams, api) {
 
-  // Get the factions
-  $http.get(api+'/faction').success(function (data) {
-    $scope.factions = data;
-  });
-  // Get the players
-  $http.get(api+'/player').success(function (data) {
-    $scope.players = data;
-  });
+  $scope.factions = api('factions');
+  $scope.players = api('players');
+  $scope.matches = api('matches');
 
   // Single faction, get data
-  if ($routeParams.slug) {
-    $http.get(api+'/faction/'+$routeParams.slug).success(function (data) {
+  if ($routeParams.id) {
+    $http.get(uri+'/faction/'+$routeParams.id).success(function (data) {
       $scope.faction = data;
     });
   }
 
   $scope.addFaction = function () {
     var form = this;
-    $http.post(api+'/faction/', form.data).success(function (data) {
+    $http.post(uri+'/faction/', form.data).success(function (data) {
       form.data = null;
-      $http.get(api+'/faction/').success(function (data) {
-        $scope.factions = data;
+      $http.get(uri+'/faction/').success(function (data) {
+        $scope.factions = api('factions', data);
+      });
+    });
+  }
+  $scope.editFaction = function () {
+    var form = this.EditFaction;
+    var supply = {
+      name: $scope.faction.name,
+      commander: $scope.faction.commander
+    };
+    $http.put(uri+'/faction/'+$scope.faction._id, supply).success(function (data) {
+      $http.get(uri+'/faction/').success(function (data) {
+        $scope.factions = api('factions', data);
+        form.$setPristine();
       });
     });
   }
   $scope.removeFaction = function (id) {
-    $http.delete(api+'/faction/'+id).success(function (data) {
-      $http.get(api+'/faction/').success(function (data) {
-        $scope.factions = data;
+    $http.delete(uri+'/faction/'+id).success(function (data) {
+      $http.get(uri+'/faction/').success(function (data) {
+        $scope.factions = api('factions', data);
       });
     });
   }
@@ -88,37 +127,84 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', function
 }]);
 
 // Controller: Player
-app.controller('PlayerController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+app.controller('PlayerController', ['$scope', '$http', '$routeParams', 'api', function ($scope, $http, $routeParams, api) {
 
-  // Get the factions
-  $http.get(api+'/faction').success(function (data) {
-    $scope.factions = data;
-  });
-  // Get the players
-  $http.get(api+'/player').success(function (data) {
-    $scope.players = data;
-  });
+  $scope.factions = api('factions');
+  $scope.players = api('players');
+  $scope.matches = api('matches');
 
-  // Single faction, get data
-  if ($routeParams.slug) {
-    $http.get(api+'/player/'+$routeParams.slug).success(function (data) {
+  // Single player, get data
+  if ($routeParams.id) {
+    $http.get(uri+'/player/'+$routeParams.id).success(function (data) {
       $scope.player = data;
     });
   }
 
   $scope.addPlayer = function () {
     var form = this;
-    $http.post(api+'/player/', form.data).success(function (data) {
+    $http.post(uri+'/player/', form.data).success(function (data) {
       form.data = null;
-      $http.get(api+'/player/').success(function (data) {
-        $scope.players = data;
+      $http.get(uri+'/player/').success(function (data) {
+        $scope.players = api('players', data);
+      });
+    });
+  }
+  $scope.editPlayer = function (id) {
+    var form = this;
+    $http.put(uri+'/player/'+id, form.data).success(function (data) {
+      form.data = null;
+      $http.get(uri+'/player/').success(function (data) {
+        $scope.players = api('players', data);
       });
     });
   }
   $scope.removePlayer = function (id) {
-    $http.delete(api+'/player/'+id).success(function (data) {
-      $http.get(api+'/player/').success(function (data) {
-        $scope.players = data;
+    $http.delete(uri+'/player/'+id).success(function (data) {
+      $http.get(uri+'/player/').success(function (data) {
+        $scope.players = api('players', data);
+      });
+    });
+  }
+
+}]);
+
+// Controller: Faction
+app.controller('MatchController', ['$scope', '$http', '$routeParams', 'api', function ($scope, $http, $routeParams, api) {
+
+  $scope.factions = api('factions');
+  $scope.players = api('players');
+  $scope.matches = api('matches');
+
+  // Single match, get data
+  if ($routeParams.id) {
+    $http.get(uri+'/match/'+$routeParams.id).success(function (data) {
+      $scope.match = data;
+    });
+  }
+
+  $scope.addMatchResult = function () {
+    var form = this;
+    console.log(form.data)
+    $http.post(uri+'/match/', form.data).success(function (data) {
+      form.data = null;
+      $http.get(uri+'/match/').success(function (data) {
+        $scope.matches = api('matches', data);
+      });
+    });
+  }
+  $scope.editMatchResult = function (id) {
+    var form = this;
+    $http.put(uri+'/match/'+id, form.data).success(function (data) {
+      form.data = null;
+      $http.get(uri+'/match/').success(function (data) {
+        $scope.matches = api('matches', data);
+      });
+    });
+  }
+  $scope.removeMatchResult = function (id) {
+    $http.delete(uri+'/match/'+id).success(function (data) {
+      $http.get(uri+'/match/').success(function (data) {
+        $scope.matches = api('matches', data);
       });
     });
   }
