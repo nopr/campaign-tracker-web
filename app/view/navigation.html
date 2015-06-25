@@ -1,38 +1,24 @@
-<div class="col-md-4">
-  <nav class="ui fluid vertical menu">
-    <a ng-href="#/factions" class="header item">
-      Factions
-      <span class="ui teal label">{{ factions.length }}</span>
-    </a>
-    <div class="item" ng-if="!factions.length">
-      No factions.
+<div class="col-md-3">
+
+  <div class="panel panel-primary panel-default">
+    <div class="panel-heading">Campaign Tracker</div>
+    <div class="list-group">
+      <a class="list-group-item" ng-href="#/">
+        Dashboard
+      </a>
+      <a class="list-group-item" ng-href="#/factions">
+        Factions <span class="pull-right badge">{{ factions.length }}</span>
+      </a>
+      <a class="list-group-item" ng-href="#/players">
+        Players <span class="pull-right badge">{{ players.length }}</span>
+      </a>
+      <a class="list-group-item" ng-href="#/matches">
+        Matches <span class="pull-right badge">{{ matches.length }}</span>
+      </a>
     </div>
-    <a ng-href="#/factions/{{ faction._id }}" ng-repeat="faction in factions" class="item">
-      {{ faction.name }}
-    </a>
-  </nav>
-  <nav class="ui fluid vertical menu">
-    <a ng-href="#/players" class="header item">
-      Players
-      <span class="ui teal label">{{ players.length }}</span>
-    </a>
-    <div class="item" ng-if="!players.length">
-      No players.
+    <div class="panel-footer">
+      <a href="#/login">Login</a>
     </div>
-    <a ng-href="#/players" class="item" ng-if="players.length">
-      List of Players
-    </a>
-  </nav>
-  <nav class="ui fluid vertical menu">
-    <a ng-href="#/matches" class="header item">
-      Matches
-      <span class="ui teal label">{{ matches.length }}</span>
-    </a>
-    <div class="item" ng-if="!matches.length">
-      No matches.
-    </div>
-    <a ng-href="#/matches" class="item" ng-if="matches.length">
-      List of Matches
-    </a>
-  </nav>
+  </div>
+
 </div>
