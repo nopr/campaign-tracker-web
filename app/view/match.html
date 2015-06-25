@@ -6,18 +6,18 @@
       <h1>Matches</h1>
     </div>
 
-    <table class="ui celled striped table">
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
-          <th>Player</th>
-          <th>Score</th>
-          <th>Player</th>
-          <th>Score</th>
+          <th sort-by data-type="home.player.name">Player 1</th>
+          <th sort-by data-type="home.score">Score</th>
+          <th sort-by data-type="away.player.name">Player 2</th>
+          <th sort-by data-type="away.score">Score</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="match in matches">
+        <tr ng-repeat="match in matches | orderBy:sort.type:sort.reverse">
           <td>{{ match.home.player.name }}</td>
           <td>{{ match.home.score }} ({{ match.home.result }})</td>
           <td>{{ match.away.player.name }}</td>
@@ -32,34 +32,34 @@
       </tbody>
     </table>
 
-    <h4 class="ui dividing header">Add new match result</h4>
-    <form class="ui form" ng-submit="addMatchResult()">
-      <div class="four fields">
-        <div class="field">
-          <label>Player 1</label>
-          <select ng-model="data.home.player" class="ui selection dropdown">
-            <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Score</label>
-          <input type="number" ng-model="data.home.score" />
-        </div>
-        <div class="field">
-          <label>Player 2</label>
-          <select ng-model="data.away.player" class="ui selection dropdown">
-            <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Score</label>
-          <input type="number" ng-model="data.away.score" />
-        </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Add match result</div>
+      <div class="panel-body">
+        <form ng-submit="addMatchResult()">
+          <div class="form-group">
+            <label>Player 1</label>
+            <select class="form-control" ng-model="data.home.player" class="ui selection dropdown">
+              <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Score</label>
+            <input class="form-control" type="number" ng-model="data.home.score" />
+          </div>
+          <div class="form-group">
+            <label>Player 2</label>
+            <select class="form-control" ng-model="data.away.player" class="ui selection dropdown">
+              <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Score</label>
+            <input class="form-control" type="number" ng-model="data.away.score" />
+          </div>
+          <button type="submit" class="btn btn-success">Add</button>
+        </form>
       </div>
-      <div class="field">
-        <button type="submit" class="ui positive button">Add</button>
-      </div>
-    </form>
+    </div>
 
   </section>
 

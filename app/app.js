@@ -91,6 +91,11 @@ app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 // Controller: Faction
 app.controller('FactionController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
+  $scope.sort = {
+    type: 'name',
+    reverse: false
+  }
+
   // Data population
   $scope.$on('data', function (events, data) {
     $scope[data.name] = data.data;
@@ -141,10 +146,6 @@ app.controller('PlayerController', ['$scope', '$http', '$routeParams', function 
   $scope.sort = {
     type: 'name',
     reverse: false
-  };
-  $scope.order = function (type) {
-    $scope.sort.reverse = ($scope.sort.type === type) ? !$scope.sort.reverse : false;
-    $scope.sort.type = type;
   }
 
   // Data population
@@ -190,6 +191,11 @@ app.controller('PlayerController', ['$scope', '$http', '$routeParams', function 
 
 // Controller: Faction
 app.controller('MatchController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+
+  $scope.sort = {
+    type: '$index',
+    reverse: false
+  }
 
   // Data population
   $scope.$on('data', function (events, data) {

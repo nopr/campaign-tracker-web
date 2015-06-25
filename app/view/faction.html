@@ -7,13 +7,8 @@
     </div>
 
     <div class="row">
-      <div style="width: 30%; float: left;" ng-repeat="faction in factions">
+      <div class="col-md-4" ng-repeat="faction in factions">
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <a href="#/factions/{{ faction._id }}" class="image">
-              <img style="max-width: 100%;" src="//placehold.it/200x200" />
-            </a>
-          </div>
           <div class="panel-body">
             <h4><a href="#/factions/{{ faction._id }}" class="header">{{ faction.name }}</a></h4>
             <b>Commander:</b> {{ faction.commander.name }}
@@ -25,79 +20,81 @@
       </div>
     </div>
 
-    <h4 class="ui dividing header">Create new faction</h4>
-    <form class="ui form" ng-submit="addFaction()">
-      <div class="two fields">
-        <div class="field">
-          <label>Name</label>
-          <input type="text" ng-model="data.name" name="name" placeholder="Black Sun Syndicate" />
-        </div>
-        <div class="field">
-          <label>Commander</label>
-          <select ng-model="data.commander" class="ui selection dropdown">
-            <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
-          </select>
-        </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Create faction</div>
+      <div class="panel-body">
+        <form ng-submit="addFaction()">
+          <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" ng-model="data.name" name="name" placeholder="Black Sun Syndicate" />
+          </div>
+          <div class="form-group">
+            <label>Commander</label>
+            <select class="form-control" ng-model="data.commander" class="ui selection dropdown">
+              <option ng-repeat="player in players" value="{{ player._id }}">{{ player.name }}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Create</button>
+        </form>
       </div>
-      <div class="field">
-        <button type="submit" class="ui fluid positive button">Create</button>
-      </div>
-    </form>
+    </div>
 
   </section>
 
-  <form name="EditFaction" class="ui form" ng-if="faction" ng-submit="editFaction()">
+  <form name="EditFaction" ng-if="faction" ng-submit="editFaction()">
 
     <div class="page-header">
-      <h2>{{ faction.name }}</h2>
+      <h1>{{ faction.name }}</h1>
     </div>
 
-    <h4 class="ui dividing header">Faction Information</h4>
-    <div class="two fields">
-      <div class="field">
-        <label>Name</label>
-        <input type="text" ng-model="faction.name" name="name" />
+    <div class="panel panel-default">
+      <div class="panel-heading">Faction Information</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label>Name</label><br />
+          <input class="form-control" type="text" ng-model="faction.name" name="name" />
+        </div>
+        <div class="form-group">
+          <label>Commander</label><br />
+          <select class="form-control" ng-model="faction.commander" class="ui selection dropdown">
+            <option ng-repeat="player in faction.players" ng-selected="player._id === faction.commander._id" value="{{ player._id }}">{{ player.name }}</option>
+          </select>
+        </div>
       </div>
-      <div class="field">
-        <label>Commander</label>
-        <select ng-model="faction.commander" class="ui selection dropdown">
-          <option ng-repeat="player in faction.players" ng-selected="player._id === faction.commander._id" value="{{ player._id }}">{{ player.name }}</option>
-        </select>
-      </div>
-    </div>
-    <div class="field" ng-show="EditFaction.$dirty">
-      <button ng-disabled="EditFaction.$submitted" type="submit" class="ui positive button">Save</button>
+      <button ng-show="EditFaction.$dirty" ng-disabled="EditFaction.$submitted" type="submit" class="btn btn-success">Save</button>
     </div>
 
-    <h4 class="ui dividing header">Faction Members</h4>
-    <table class="ui celled striped table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Win</th>
-          <th>Draw</th>
-          <th>Lose</th>
-          <th>MOV</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="player in faction.players">
-          <td>{{ player.name }}</td>
-          <td>{{ player.games.won }}</td>
-          <td>{{ player.games.drawn }}</td>
-          <td>{{ player.games.lost }}</td>
-          <td>{{ player.score.average }}</td>
-          <td>{{ player.score.cumulative }}</td>
-        </tr>
-        <tr ng-if="!players.length">
-          <td colspan="7">No players</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="panel panel-default">
+      <div class="panel-heading">Faction Members</div>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th sort-by data-type="name">Name</th>
+              <th sort-by data-type="games.won">Win</th>
+              <th sort-by data-type="games.drawn">Draw</th>
+              <th sort-by data-type="games.lost">Lose</th>
+              <th sort-by data-type="score.average">MOV</th>
+              <th sort-by data-type="score.cumulative">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="player in faction.players | orderBy:sort.type:sort.reverse">
+              <td>{{ player.name }}</td>
+              <td>{{ player.games.won }}</td>
+              <td>{{ player.games.drawn }}</td>
+              <td>{{ player.games.lost }}</td>
+              <td>{{ player.score.average }}</td>
+              <td>{{ player.score.cumulative }}</td>
+            </tr>
+            <tr ng-if="!players.length">
+              <td colspan="7">No players</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
 
     <h2 class="ui center aligned icon header">
-      <button class="ui negative button" ng-click="removeFaction(faction._id)">Remove Faction</button>
+      <button class="btn btn-danger" ng-click="removeFaction(faction._id)">Remove Faction</button>
     </h2>
 
   </form>
