@@ -36,56 +36,49 @@ app.config(function ($routeProvider) {
     });
 });
 
-// Service: Api
-app.factory('api', ['$http', function ($http) {
-  var stored = {
-    factions: 0,
-    players: 0,
-    matches: 0
-  };
-  var self = {};
-  return function (resource, data) {
-    if (data) {
-      stored[resource] = data;
-      return stored[resource];
-    }
-    if (!data) {
-      return stored[resource];
-    }
-  }
-}]);
-
 // Directive: navigation
-app.directive('navigation', ['$http', function ($http) {
-  return {
-    templateUrl: 'app/view/navigation.html',
-    scope: '='
+app.directive('navigation', ['$http',
+  function ($http) {
+    return {
+      scope: '=',
+      controller: function ($rootScope, $scope) {
+        // Requests and broadcasts
+        $http.get(uri+'/faction').success(function (data) {
+          $rootScope.$broadcast('data', { name: 'factions', data: data })
+        })
+        $http.get(uri+'/player').success(function (data) {
+          $rootScope.$broadcast('data', { name: 'players', data: data })
+        })
+        $http.get(uri+'/match').success(function (data) {
+          $rootScope.$broadcast('data', { name: 'matches', data: data })
+        })
+        // Data population
+        $scope.$on('data', function (events, data) {
+          $scope[data.name] = data.data;
+        })
+      },
+      templateUrl: 'app/view/navigation.html'
+    }
   }
-}]);
+]);
 
 // Controller: Main
-app.controller('MainController', ['$scope', '$http', 'api', function ($scope, $http, api) {
+app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 
-  $http.get(uri+'/faction').success(function (data) {
-    $scope.factions = api('factions', data);
-  });
-  $http.get(uri+'/player').success(function (data) {
-    console.log('players', data)
-    $scope.players = api('players', data);
-  });
-  $http.get(uri+'/match').success(function (data) {
-    console.log('matches', data)
-    $scope.matches = api('matches', data);
-  });
+  // Data population
+  $scope.$on('data', function (events, data) {
+    $scope[data.name] = data.data;
+  })
 
 }]);
 
 // Controller: Faction
-app.controller('FactionController', ['$scope', '$http', '$routeParams', 'api', function ($scope, $http, $routeParams, api) {
+app.controller('FactionController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
-  $scope.factions = api('factions');
-  $scope.players = api('players');
-  $scope.matches = api('matches');
+  // Data population
+  $scope.$on('data', function (events, data) {
+    $scope[data.name] = data.data;
+  })
 
   // Single faction, get data
   if ($routeParams.id) {
@@ -99,7 +92,7 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', 'api', f
     $http.post(uri+'/faction/', form.data).success(function (data) {
       form.data = null;
       $http.get(uri+'/faction/').success(function (data) {
-        $scope.factions = api('factions', data);
+        $scope.$emit('data', { name: 'factions', data: data })
       });
     });
   }
@@ -111,7 +104,7 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', 'api', f
     };
     $http.put(uri+'/faction/'+$scope.faction._id, supply).success(function (data) {
       $http.get(uri+'/faction/').success(function (data) {
-        $scope.factions = api('factions', data);
+        $scope.$emit('data', { name: 'factions', data: data })
         form.$setPristine();
       });
     });
@@ -119,7 +112,7 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', 'api', f
   $scope.removeFaction = function (id) {
     $http.delete(uri+'/faction/'+id).success(function (data) {
       $http.get(uri+'/faction/').success(function (data) {
-        $scope.factions = api('factions', data);
+        $scope.$emit('data', { name: 'factions', data: data })
       });
     });
   }
@@ -127,11 +120,12 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', 'api', f
 }]);
 
 // Controller: Player
-app.controller('PlayerController', ['$scope', '$http', '$routeParams', 'api', function ($scope, $http, $routeParams, api) {
+app.controller('PlayerController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
-  $scope.factions = api('factions');
-  $scope.players = api('players');
-  $scope.matches = api('matches');
+  // Data population
+  $scope.$on('data', function (events, data) {
+    $scope[data.name] = data.data;
+  })
 
   // Single player, get data
   if ($routeParams.id) {
@@ -145,7 +139,7 @@ app.controller('PlayerController', ['$scope', '$http', '$routeParams', 'api', fu
     $http.post(uri+'/player/', form.data).success(function (data) {
       form.data = null;
       $http.get(uri+'/player/').success(function (data) {
-        $scope.players = api('players', data);
+        $scope.$emit('data', { name: 'players', data: data })
       });
     });
   }
@@ -154,14 +148,14 @@ app.controller('PlayerController', ['$scope', '$http', '$routeParams', 'api', fu
     $http.put(uri+'/player/'+id, form.data).success(function (data) {
       form.data = null;
       $http.get(uri+'/player/').success(function (data) {
-        $scope.players = api('players', data);
+        $scope.$emit('data', { name: 'players', data: data })
       });
     });
   }
   $scope.removePlayer = function (id) {
     $http.delete(uri+'/player/'+id).success(function (data) {
       $http.get(uri+'/player/').success(function (data) {
-        $scope.players = api('players', data);
+        $scope.$emit('data', { name: 'players', data: data })
       });
     });
   }
@@ -169,11 +163,12 @@ app.controller('PlayerController', ['$scope', '$http', '$routeParams', 'api', fu
 }]);
 
 // Controller: Faction
-app.controller('MatchController', ['$scope', '$http', '$routeParams', 'api', function ($scope, $http, $routeParams, api) {
+app.controller('MatchController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
-  $scope.factions = api('factions');
-  $scope.players = api('players');
-  $scope.matches = api('matches');
+  // Data population
+  $scope.$on('data', function (events, data) {
+    $scope[data.name] = data.data;
+  })
 
   // Single match, get data
   if ($routeParams.id) {
@@ -184,11 +179,10 @@ app.controller('MatchController', ['$scope', '$http', '$routeParams', 'api', fun
 
   $scope.addMatchResult = function () {
     var form = this;
-    console.log(form.data)
     $http.post(uri+'/match/', form.data).success(function (data) {
       form.data = null;
       $http.get(uri+'/match/').success(function (data) {
-        $scope.matches = api('matches', data);
+        $scope.$emit('data', { name: 'matches', data: data })
       });
     });
   }
@@ -197,14 +191,14 @@ app.controller('MatchController', ['$scope', '$http', '$routeParams', 'api', fun
     $http.put(uri+'/match/'+id, form.data).success(function (data) {
       form.data = null;
       $http.get(uri+'/match/').success(function (data) {
-        $scope.matches = api('matches', data);
+        $scope.$emit('data', { name: 'matches', data: data })
       });
     });
   }
   $scope.removeMatchResult = function (id) {
     $http.delete(uri+'/match/'+id).success(function (data) {
       $http.get(uri+'/match/').success(function (data) {
-        $scope.matches = api('matches', data);
+        $scope.$emit('data', { name: 'matches', data: data })
       });
     });
   }
