@@ -42,6 +42,8 @@ app.directive('navigation', ['$http',
     return {
       scope: '=',
       controller: function ($rootScope, $scope) {
+        // State
+        $scope.collapsed = true
         // Requests and broadcasts
         $http.get(uri+'/faction').success(function (data) {
           $rootScope.$broadcast('data', { name: 'factions', data: data })
@@ -61,6 +63,20 @@ app.directive('navigation', ['$http',
     }
   }
 ]);
+
+app.directive('sortBy', function () {
+  return {
+    scope: '=',
+    link: function (scope, element, attrs) {
+      element.on('click', function (event) {
+        scope.$apply(function () {
+          scope.sort.reverse = (scope.sort.type === attrs.type) ? !scope.sort.reverse : false;
+          scope.sort.type = attrs.type;
+        });
+      });
+    }
+  }
+});
 
 // Controller: Main
 app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
@@ -122,8 +138,18 @@ app.controller('FactionController', ['$scope', '$http', '$routeParams', function
 // Controller: Player
 app.controller('PlayerController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
 
+  $scope.sort = {
+    type: 'name',
+    reverse: false
+  };
+  $scope.order = function (type) {
+    $scope.sort.reverse = ($scope.sort.type === type) ? !$scope.sort.reverse : false;
+    $scope.sort.type = type;
+  }
+
   // Data population
   $scope.$on('data', function (events, data) {
+    console.log(data)
     $scope[data.name] = data.data;
   })
 

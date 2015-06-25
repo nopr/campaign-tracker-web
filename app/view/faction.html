@@ -1,29 +1,25 @@
-<div class="col-md-9">
+<div class="col-md-12">
 
   <section ng-if="!faction">
 
-    <h2 class="ui center aligned icon header">
-      <i class="circular cubes icon"></i>
-      <div>Factions</div>
-    </h2>
+    <div class="page-header">
+      <h1>Factions</h1>
+    </div>
 
-    <div class="ui three columns grid">
-      <div class="column" ng-repeat="faction in factions">
-        <div class="ui fluid card">
-          <a href="#/factions/{{ faction._id }}" class="image">
-            <img src="//placehold.it/200x200" />
-          </a>
-          <div class="content">
-            <a href="#/factions/{{ faction._id }}" class="header">{{ faction.name }}</a>
-            <div class="meta">
-              <b>Commander:</b> {{ faction.commander.name }}
-            </div>
-            <div class="description">
-              Description
-            </div>
+    <div class="row">
+      <div style="width: 30%; float: left;" ng-repeat="faction in factions">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <a href="#/factions/{{ faction._id }}" class="image">
+              <img style="max-width: 100%;" src="//placehold.it/200x200" />
+            </a>
           </div>
-          <div class="extra content">
-            <i class="user icon"></i> {{ faction.players.length }} Members
+          <div class="panel-body">
+            <h4><a href="#/factions/{{ faction._id }}" class="header">{{ faction.name }}</a></h4>
+            <b>Commander:</b> {{ faction.commander.name }}
+          </div>
+          <div class="panel-footer">
+            {{ faction.players.length }} Members
           </div>
         </div>
       </div>
@@ -52,10 +48,9 @@
 
   <form name="EditFaction" class="ui form" ng-if="faction" ng-submit="editFaction()">
 
-    <h2 class="ui center aligned icon header">
-      <i class="circular cube icon"></i>
-      <div>{{ faction.name }}</div>
-    </h2>
+    <div class="page-header">
+      <h2>{{ faction.name }}</h2>
+    </div>
 
     <h4 class="ui dividing header">Faction Information</h4>
     <div class="two fields">

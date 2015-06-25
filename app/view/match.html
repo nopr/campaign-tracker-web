@@ -1,11 +1,10 @@
-<div class="col-md-9">
+<div class="col-md-12">
 
   <section ng-if="!match">
 
-    <h2 class="ui center aligned icon header">
-      <i class="circular trophy icon"></i>
-      <div>Matches</div>
-    </h2>
+    <div class="page-header">
+      <h1>Matches</h1>
+    </div>
 
     <table class="ui celled striped table">
       <thead>
@@ -66,10 +65,9 @@
 
   <form class="ui form" ng-if="match" ng-submit="editMatchResult(match._id)">
 
-    <h2 class="ui center aligned icon header">
-      <i class="circular user icon"></i>
-      <div>{{ match.home.player.name }} vs {{ match.away.player.name }}</div>
-    </h2>
+    <div class="page-header">
+      <h2>{{ match.home.player.name }} vs {{ match.away.player.name }}</h2>
+    </div>
 
     <div class="two fields">
       <div class="field">

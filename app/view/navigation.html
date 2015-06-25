@@ -1,24 +1,27 @@
-<div class="col-md-3">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
 
-  <div class="panel panel-primary panel-default">
-    <div class="panel-heading">Campaign Tracker</div>
-    <div class="list-group">
-      <a class="list-group-item" ng-href="#/">
-        Dashboard
-      </a>
-      <a class="list-group-item" ng-href="#/factions">
-        Factions <span class="pull-right badge">{{ factions.length }}</span>
-      </a>
-      <a class="list-group-item" ng-href="#/players">
-        Players <span class="pull-right badge">{{ players.length }}</span>
-      </a>
-      <a class="list-group-item" ng-href="#/matches">
-        Matches <span class="pull-right badge">{{ matches.length }}</span>
-      </a>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" ng-click="collapsed = !collapsed">
+        <span class="sr-only">Toggle</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#/">186</a>
     </div>
-    <div class="panel-footer">
-      <a href="#/login">Login</a>
+
+    <div collapse="collapsed" class="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a ng-href="#/">Dashboard</a></li>
+        <li><a ng-href="#/factions">Factions</a></li>
+        <li><a ng-href="#/players">Players</a></li>
+        <li><a ng-href="#/matches">Matches</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#/login">Login</a></li>
+      </ul>
     </div>
+
   </div>
-
-</div>
+</nav>
