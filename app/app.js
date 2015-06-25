@@ -1,5 +1,5 @@
 
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
 var uri = 'http://localhost:5000';
 // var uri = 'http://xwing-campaign-tracker.herokuapp.com';
 
